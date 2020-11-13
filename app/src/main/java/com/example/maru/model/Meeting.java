@@ -17,25 +17,32 @@ public class Meeting implements Serializable {
     /** Name */
     private String name;
 
+    /** Room used for the meeting*/
+    private String room;
+
+    /** Date & Time*/
+    private Date date;
+
     /** Color */
     private String colorHex;
 
     /** Adress */
     private List<String> users;
 
-    /** Date & Time*/
-    private Date date;
-
     /**
      * Constructor
      * @param id
      * @param name
+     * @param room
+     * @param date
      * @param colorHex
      * @params users
      */
-    public Meeting(long id, String name, String colorHex, List<String> users) {
+    public Meeting(long id, String name, String room, Date date, String colorHex, List<String> users) {
         this.id = id;
         this.name = name;
+        this.room = room;
+        this.date = date;
         this.colorHex = colorHex;
         this.users = users;
     }
@@ -44,11 +51,15 @@ public class Meeting implements Serializable {
      * Constructor
      * @param id
      * @param name
+     * @param room
+     * @param date
      * @param colorHex
      */
-    public Meeting(long id, String name, String colorHex) {
+    public Meeting(long id, String name, String room, Date date, String colorHex) {
         this.id = id;
         this.name = name;
+        this.room = room;
+        this.date = date;
         this.colorHex = colorHex;
     }
 

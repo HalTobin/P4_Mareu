@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.maru.R;
 import com.example.maru.databinding.FragmentItemListMeetingBinding;
+import com.example.maru.event.DeleteMeetingEvent;
 import com.example.maru.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,20 +33,17 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Meeting meeting = mMeetings.get(position);
+        final Meeting meeting = mMeetings.get(position);
         holder.binding.itemListMeetingTxtName.setText(meeting.getName());
         Glide.with(holder.binding.itemListMeetingImg.getContext())
                 .load(meeting.getColorHex())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.binding.itemListMeetingImg);
 
-
-
         holder.binding.itemListDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO - DeleteEvent to create
-                //EventBus.getDefault().post(new DeleteNMeetingEvent(meeting));
+                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
             }
         });
     }
