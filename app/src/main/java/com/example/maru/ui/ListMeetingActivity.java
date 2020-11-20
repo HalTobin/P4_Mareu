@@ -9,8 +9,12 @@ import android.view.View;
 
 import com.example.maru.di.DI;
 import com.example.maru.databinding.ActivityListMeetingBinding;
+import com.example.maru.event.DeleteMeetingEvent;
 import com.example.maru.model.Meeting;
 import com.example.maru.service.MeetingApiService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,5 +50,27 @@ public class ListMeetingActivity extends AppCompatActivity {
         binding.listMeetings.setLayoutManager(new LinearLayoutManager(this));
         binding.listMeetings.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         binding.listMeetings.setAdapter(myAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * Fired if the user clicks on a delete button
+     * @param event
+     */
+    @Subscribe
+    public void onDeleteNeighbour(DeleteMeetingEvent event) {
+        myApiService.deleteMeeting(event.meeting);
+        initRecycler();
     }
 }

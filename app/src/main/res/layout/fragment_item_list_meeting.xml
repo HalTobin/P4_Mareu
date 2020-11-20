@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@color/colorAccent"/>
+        app:srcCompat="@drawable/ic_blank_circle" />
 
     <TextView
         android:id="@+id/item_list_meeting_txt_name"
@@ -30,10 +30,12 @@
         android:text="Réunion A - 14h00 - Peach"/>
 
     <TextView
-        android:id="@+id/item_list_meeting_users"
+        android:id="@+id/item_list_meeting_txt_users"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:maxLength="31"
+        android:maxLines="1"
         app:layout_constraintTop_toBottomOf="@+id/item_list_meeting_txt_name"
         app:layout_constraintStart_toEndOf="@+id/item_list_meeting_img"
         android:text="user1@lamzone.com"/>
