@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Maréu</string>
+
+    <string name="select_date">Date</string>
+    <string name="select_color">Couleur</string>
+    <string name="select_users">Participants</string>
+
+    <string name="hint_date">JJ/MM/AA</string>
+    <string name="hint_hour">HH:MM</string>
+    <string name="hint_name">Sujet</string>
+    <string name="hint_room">Salle</string>
+    <string name="hint_user">Participant</string>
+
+    <string name="pick_a_color">Sélectionnez une couleur :</string>
+    <string name="select">Valider</string>
+    <string name="cancel">Annuler</string>
+
 </resources>

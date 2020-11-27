@@ -45,7 +45,7 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.MeetingFragment"
-        tools:listitem="@layout/fragment_item_list_meeting" />
+        tools:listitem="@layout/item_list_meeting" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting"

@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.maru.R;
 import com.example.maru.di.DI;
 import com.example.maru.databinding.ActivityListMeetingBinding;
 import com.example.maru.event.DeleteMeetingEvent;
@@ -16,12 +18,10 @@ import com.example.maru.service.MeetingApiService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListMeetingActivity extends AppCompatActivity {
+public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding> {
 
-    private ActivityListMeetingBinding binding;
     private ListMeetingAdapter myAdapter;
 
     private MeetingApiService myApiService;
@@ -32,9 +32,12 @@ public class ListMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         myApiService = DI.getMeetingApiService();
 
-        binding = ActivityListMeetingBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        binding.addMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMeeting();
+            }
+        });
     }
 
     @Override
@@ -72,5 +75,9 @@ public class ListMeetingActivity extends AppCompatActivity {
     public void onDeleteNeighbour(DeleteMeetingEvent event) {
         myApiService.deleteMeeting(event.meeting);
         initRecycler();
+    }
+
+    void addMeeting() {
+        AddMeetingActivity.navigate(this);
     }
 }

@@ -31,14 +31,15 @@
 
     <TextView
         android:id="@+id/item_list_meeting_txt_users"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:maxLength="31"
+        android:ellipsize="end"
         android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@+id/item_list_meeting_txt_name"
+        android:text="user1@lamzone.com"
+        app:layout_constraintEnd_toStartOf="@+id/item_list_delete_button"
         app:layout_constraintStart_toEndOf="@+id/item_list_meeting_img"
-        android:text="user1@lamzone.com"/>
+        app:layout_constraintTop_toBottomOf="@+id/item_list_meeting_txt_name" />
 
     <ImageButton
         android:id="@+id/item_list_delete_button"

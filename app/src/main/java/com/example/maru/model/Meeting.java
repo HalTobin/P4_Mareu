@@ -54,6 +54,24 @@ public class Meeting implements Serializable {
      * @param id
      * @param name
      * @param room
+     * @param dateTimeStamp
+     * @param colorHex
+     * @params users
+     */
+    public Meeting(long id, String name, String room, long dateTimeStamp, String colorHex, List<String> users) {
+        this.id = id;
+        this.name = name;
+        this.room = room;
+        this.dateTimeStamp = dateTimeStamp;
+        this.colorInt = Color.parseColor(colorHex);
+        this.users = users;
+    }
+
+    /**
+     * Constructor
+     * @param id
+     * @param name
+     * @param room
      * @param date
      * @param colorHex
      * @params users
@@ -121,12 +139,6 @@ public class Meeting implements Serializable {
             if(c==users.size()-1) myString = myString + users.get(c);
             else myString = myString + users.get(c) + ", ";
         }
-
-        if(myString.length() > 31) {
-            if(myString.charAt(27)=='.') myString = myString.substring(0, 28) + "..";
-            else myString = myString.substring(0, 28) + "...";
-        }
-
         return myString;
     }
 

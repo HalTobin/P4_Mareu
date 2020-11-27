@@ -10,11 +10,21 @@ import java.util.List;
 public interface MeetingApiService {
 
     /**
-     * Get all my Meetings
+     * Get all the Meetings
      * @return {@Link List}
      */
     List<Meeting> getMeetings();
 
+    /**
+     * Get all the Rooms
+     * @return {@Link List}
+     */
+    List<String> getRooms();
+
+    /**
+     * Get all the Users
+     * @return {@Link List}
+     */
     List<String> getUsers();
 
     /**
@@ -28,4 +38,9 @@ public interface MeetingApiService {
      */
     void createMeeting(Meeting meeting);
 
+    /**
+     * Get the next available Id
+     * @return
+     */
+    long getNextId();
 }
