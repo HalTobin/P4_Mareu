@@ -9,21 +9,29 @@
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/list_meetings"
+        android:id="@+id/dialog_picker_user_list_users"
         android:name="com.example.mareu.ui.FragmentMeeting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         tools:context=".ui.MeetingFragment"
-        tools:listitem="@layout/item_list_user"/>
+        tools:listitem="@layout/item_list_user_simple"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialog_pick_user_txtEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
             android:hint="@string/hint_user"/>
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -16,6 +16,8 @@
     <color name="selectColor">#523CC2FF</color>
     <color name="backColor">#FFFFFFFF</color>
 
+    <color name="bt_add_ok">#007799</color>
+
     <color name="LIGHT_RED">#FF9999</color>
     <color name="LIGHT_ORANGE">#FFBF99</color>
     <color name="LIGHT_YELLOW">#FFFF99</color>

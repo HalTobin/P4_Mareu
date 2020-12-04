@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.maru.R;
-import com.example.maru.databinding.FragmentItemListMeetingBinding;
+import com.example.maru.databinding.ItemListMeetingBinding;
 import com.example.maru.event.DeleteMeetingEvent;
 import com.example.maru.model.Meeting;
 
@@ -36,7 +36,7 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FragmentItemListMeetingBinding view = FragmentItemListMeetingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemListMeetingBinding view = ItemListMeetingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(view);
     }
 
@@ -63,9 +63,9 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private FragmentItemListMeetingBinding binding;
+        private ItemListMeetingBinding binding;
 
-        public ViewHolder(FragmentItemListMeetingBinding view) {
+        public ViewHolder(ItemListMeetingBinding view) {
             super(view.getRoot());
             binding = view;
         }

@@ -1,14 +1,12 @@
 package com.example.maru.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.maru.R;
+import com.example.maru.base.BaseActivity;
 import com.example.maru.di.DI;
 import com.example.maru.databinding.ActivityListMeetingBinding;
 import com.example.maru.event.DeleteMeetingEvent;
@@ -72,7 +70,7 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
      * @param event
      */
     @Subscribe
-    public void onDeleteNeighbour(DeleteMeetingEvent event) {
+    public void onDeleteMeeting(DeleteMeetingEvent event) {
         myApiService.deleteMeeting(event.meeting);
         initRecycler();
     }

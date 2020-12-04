@@ -19,9 +19,11 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_meeting_txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:inputType="text"
                 android:hint="@string/hint_name"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,6 +59,7 @@
             android:weightSum="2">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/activity_add_meeting_bt_pick_date"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -65,10 +68,11 @@
                 android:backgroundTint="@color/colorVeryLightGrey">
 
                 <TextView
+                    android:id="@+id/activity_add_meeting_txt_date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:drawableLeft="@drawable/ic_calendar"
@@ -79,6 +83,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/activity_add_meeting_bt_pick_time"
                 android:layout_marginLeft="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -87,10 +92,11 @@
                 android:backgroundTint="@color/colorVeryLightGrey">
 
                 <TextView
+                    android:id="@+id/activity_add_meeting_txt_time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:drawableLeft="@drawable/ic_clock"
@@ -104,11 +110,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_meeting_txt_room"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:hint="@string/hint_room"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -136,6 +145,7 @@
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
                 android:text="+"
+                android:textSize="24dp"
                 app:layout_constraintTop_toTopOf="@id/activity_add_meeting_lyt_list_user"
                 app:layout_constraintBottom_toBottomOf="@id/activity_add_meeting_lyt_list_user"
                 app:layout_constraintEnd_toEndOf="@id/activity_add_meeting_lyt_list_user"
@@ -145,13 +155,24 @@
 
         <androidx.recyclerview.widget.RecyclerView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:id="@+id/list_meetings"
+            android:id="@+id/activity_add_meeting_list_user"
             android:name="com.example.mareu.ui.FragmentMeeting"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.MeetingFragment"
             tools:listitem="@layout/item_list_user"/>
+
+        <Button
+            android:id="@+id/activity_add_meeting_bt_create_meeting"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/add_meeting_create"
+            android:textSize="16sp"
+            style="@style/AppTheme.RoundedCornerMaterialButton"/>
 
     </LinearLayout>
 

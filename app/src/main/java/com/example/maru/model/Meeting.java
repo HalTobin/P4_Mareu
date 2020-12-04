@@ -33,6 +33,14 @@ public class Meeting implements Serializable {
 
     /**
      * Constructor
+     * Every parameters = null
+     */
+    public Meeting() {
+
+    }
+
+    /**
+     * Constructor
      * @param id
      * @param name
      * @param room
