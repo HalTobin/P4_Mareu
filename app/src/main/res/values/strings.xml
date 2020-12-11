@@ -5,7 +5,7 @@
     <string name="select_color">Couleur</string>
     <string name="select_users">Participants</string>
 
-    <string name="filter_date">Filtrer par lieu</string>
+    <string name="filter_date">Filtrer par date</string>
     <string name="filter_room">Filtrer par salle</string>
     <string name="filter_reset">Tout afficher</string>
 

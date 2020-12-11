@@ -3,8 +3,6 @@ package com.example.maru.model;
 import android.graphics.Color;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,8 +20,20 @@ public class Meeting implements Serializable {
     /** Room used for the meeting*/
     private String room;
 
-    /** Date & Time*/
-    private long dateTimeStamp;
+    /** Year */
+    private int year;
+
+    /** Month */
+    private int month;
+
+    /** Day */
+    private int day;
+
+    /** Hour */
+    private int hour;
+
+    /** Minute */
+    private int min;
 
     /** Color */
     private int colorInt;
@@ -44,51 +54,23 @@ public class Meeting implements Serializable {
      * @param id
      * @param name
      * @param room
-     * @param dateTimeStamp
-     * @param colorInt
-     * @params users
-     */
-    public Meeting(long id, String name, String room, long dateTimeStamp, int colorInt, List<String> users) {
-        this.id = id;
-        this.name = name;
-        this.room = room;
-        this.dateTimeStamp = dateTimeStamp;
-        this.colorInt = colorInt;
-        this.users = users;
-    }
-
-    /**
-     * Constructor
-     * @param id
-     * @param name
-     * @param room
-     * @param dateTimeStamp
+     * @param year
+     * @param month
+     * @param day
+     * @param hour
+     * @param min
      * @param colorHex
      * @params users
      */
-    public Meeting(long id, String name, String room, long dateTimeStamp, String colorHex, List<String> users) {
+    public Meeting(long id, String name, String room, int year, int month, int day, int hour, int min, String colorHex, List<String> users) {
         this.id = id;
         this.name = name;
         this.room = room;
-        this.dateTimeStamp = dateTimeStamp;
-        this.colorInt = Color.parseColor(colorHex);
-        this.users = users;
-    }
-
-    /**
-     * Constructor
-     * @param id
-     * @param name
-     * @param room
-     * @param date
-     * @param colorHex
-     * @params users
-     */
-    public Meeting(long id, String name, String room, Date date, String colorHex, List<String> users) {
-        this.id = id;
-        this.name = name;
-        this.room = room;
-        this.dateTimeStamp = date.getTime();
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.min = min;
         this.colorInt = Color.parseColor(colorHex);
         this.users = users;
     }
@@ -117,6 +99,44 @@ public class Meeting implements Serializable {
         this.room = room;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() { return day; }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
     public int getColorInt() {
         return colorInt;
     }
@@ -142,7 +162,7 @@ public class Meeting implements Serializable {
     }
 
     public String getTitleString() {
-        String myString = String.format("%02d", this.getDate().getHours()) + "h" + String.format("%02d", this.getDate().getMinutes()) + " - " + this.getRoom() + " - " + this.getName();
+        String myString = String.format("%02d", hour) + "h" + String.format("%02d", min) + " - " + this.getRoom() + " - " + this.getName();
         return myString;
     }
 
@@ -155,20 +175,12 @@ public class Meeting implements Serializable {
         return myString;
     }
 
-    public long getDateTimeStamp() {
-        return dateTimeStamp;
-    }
-
-    public void setDateTimeStamp(long dateTimeStamp) {
-        this.dateTimeStamp = dateTimeStamp;
-    }
-
-    public Date getDate() {
-        return new Date(dateTimeStamp);
-    }
-
-    public void setDate(Date date) {
-        this.dateTimeStamp = date.getTime();
+    public boolean isDateEqual(int year, int month, int day) {
+        boolean isEqual = true;
+        if(this.year != year) isEqual = false;
+        if(this.month != month) isEqual = false;
+        if(this.day != day) isEqual = false;
+        return isEqual;
     }
 
     @Override

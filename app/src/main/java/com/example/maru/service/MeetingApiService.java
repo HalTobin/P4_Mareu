@@ -2,7 +2,6 @@ package com.example.maru.service;
 
 import com.example.maru.model.Meeting;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ public interface MeetingApiService {
      * Get all the Meetings of a specific date
      * @return {@Link List}
      */
-    List<Meeting> getMeetingsByDate(Date date);
+    List<Meeting> getMeetingsByDate(int year, int month, int day);
 
     /**
      * Get all the Meetings of a specific room

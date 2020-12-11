@@ -34,7 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -208,6 +207,7 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
                 newMeetingColor = color;
                 binding.activityAddMeetingImgColor.setColorFilter(newMeetingColor);
                 colorPickerDialog.dismissDialog();
+                isFilled();
             }
         });
         colorPickerDialog.setTitle(getString(R.string.pick_a_color)).setColumns(5).show();
@@ -301,7 +301,11 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
             newMeeting.setId(myApiService.getNextId());
             newMeeting.setName(newMeetingName);
             newMeeting.setRoom(newMeetingRoom);
-            newMeeting.setDate(new Date(newMeetingYear, newMeetingMonth, newMeetingDay, newMeetingHour, newMeetingMin));
+            newMeeting.setYear(newMeetingYear);
+            newMeeting.setMonth(newMeetingMonth);
+            newMeeting.setDay(newMeetingDay);
+            newMeeting.setHour(newMeetingHour);
+            newMeeting.setMin(newMeetingMin);
             newMeeting.setColorInt(newMeetingColor);
             newMeeting.setUsers(newMeetingUsers);
             myApiService.createMeeting(newMeeting);

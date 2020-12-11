@@ -3,7 +3,6 @@ package com.example.maru.service;
 import com.example.maru.model.Meeting;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,10 +20,12 @@ public class DummyMeetingApiService implements MeetingApiService {
     public List<Meeting> getMeetings() { return meetings; }
 
     @Override
-    public List<Meeting> getMeetingsByDate(Date date) {
+    public List<Meeting> getMeetingsByDate(int year, int month, int day) {
+        System.out.println("SELECTED : " + day+"/"+month+"/"+year);
         List<Meeting> meetingsFilter = new ArrayList<>();
         for(Meeting m:meetings) {
-            if(m.getDate()==date) meetingsFilter.add(m);
+            System.out.println("COMPARED : " + m.getDay()+"/"+m.getMonth()+"/"+m.getYear());
+            if(m.isDateEqual(year, month, day)) meetingsFilter.add(m);
         }
         return meetingsFilter;
     }

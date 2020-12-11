@@ -52,7 +52,6 @@ public class ListUserSimpleAdapter extends RecyclerView.Adapter<ListUserSimpleAd
             super(view.getRoot());
             binding = view;
         }
-
     }
 
 }

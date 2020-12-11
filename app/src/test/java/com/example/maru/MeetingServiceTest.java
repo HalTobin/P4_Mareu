@@ -41,10 +41,7 @@ public class MeetingServiceTest {
         Date date = new Date(2020, 11, 4);
         List<Meeting> meetingsByDate = service.getMeetingsByDate(date);
         for (Meeting m:meetingsByDate) {
-            Date testedDate = m.getDate();
-            assertEquals(testedDate.getDay(), date.getDay());
-            assertEquals(testedDate.getMonth(), date.getMonth());
-            assertEquals(testedDate.getYear(), date.getYear());
+            assertEquals(date, m.getDay());
         }
     }
 

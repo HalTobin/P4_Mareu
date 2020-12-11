@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.example.maru.R;
 import com.example.maru.base.BaseActivity;
@@ -18,13 +20,15 @@ import com.example.maru.event.DeleteMeetingEvent;
 import com.example.maru.model.Meeting;
 import com.example.maru.service.MeetingApiService;
 import com.example.maru.ui.adapter.ListMeetingAdapter;
+import com.example.maru.ui.dialog.PickRoomDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Calendar;
 import java.util.List;
 
-public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding> {
+public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding> implements DatePickerDialog.OnDateSetListener, PickRoomDialog.PickRoomDialogListener {
 
     private ListMeetingAdapter myAdapter;
 
@@ -56,13 +60,14 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.list_meetings_filter_date:
-                System.out.println("FILTRE DATE");
+                openDialDate();
                 return true;
             case R.id.list_meetings_filter_room:
-                System.out.println("FILTRE SALLE");
+                openDialRoom();
                 return true;
             case R.id.list_meetings_filter_reset:
-                System.out.println("FILTRE RESET");
+                myMeetings = myApiService.getMeetings();
+                initRecycler();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -71,12 +76,11 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
     @Override
     public void onResume() {
         super.onResume();
+        myMeetings = myApiService.getMeetings();
         initRecycler();
     }
 
     private void initRecycler() {
-        myMeetings = myApiService.getMeetings();
-
         myAdapter = new ListMeetingAdapter(myMeetings);
         binding.listMeetings.setLayoutManager(new LinearLayoutManager(this));
         binding.listMeetings.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -102,6 +106,34 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
         myApiService.deleteMeeting(event.meeting);
+        initRecycler();
+    }
+
+    private void openDialDate() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    private void openDialRoom() {
+        PickRoomDialog pickRoomDialog = new PickRoomDialog();
+        pickRoomDialog.show(getSupportFragmentManager(), "Pick Room Dialog");
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        System.out.println("DATE PICKER DIALOG : " + dayOfMonth+"/"+month+"/"+year);
+        myMeetings = myApiService.getMeetingsByDate(year, month, dayOfMonth);
+        initRecycler();
+    }
+
+    @Override
+    public void sendRoom(String room) {
+        System.out.println("GET BY ROOM");
+        myMeetings = myApiService.getMeetingsByRoom(room);
         initRecycler();
     }
 
