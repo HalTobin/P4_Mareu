@@ -1,4 +1,4 @@
-package com.example.maru.dialog;
+package com.example.maru.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,7 +19,7 @@ import com.example.maru.R;
 import com.example.maru.di.DI;
 import com.example.maru.event.GetUserEvent;
 import com.example.maru.service.MeetingApiService;
-import com.example.maru.ui.ListUserSimpleAdapter;
+import com.example.maru.ui.adapter.ListUserSimpleAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

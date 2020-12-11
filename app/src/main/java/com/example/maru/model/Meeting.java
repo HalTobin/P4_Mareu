@@ -141,6 +141,11 @@ public class Meeting implements Serializable {
         this.users = users;
     }
 
+    public String getTitleString() {
+        String myString = String.format("%02d", this.getDate().getHours()) + "h" + String.format("%02d", this.getDate().getMinutes()) + " - " + this.getRoom() + " - " + this.getName();
+        return myString;
+    }
+
     public String getUsersString() {
         String myString = "";
         for (int c = 0; c < users.size(); c++) {

@@ -1,23 +1,12 @@
-package com.example.maru.ui;
+package com.example.maru.ui.adapter;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.BlendMode;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.maru.R;
 import com.example.maru.databinding.ItemListMeetingBinding;
 import com.example.maru.event.DeleteMeetingEvent;
 import com.example.maru.model.Meeting;
@@ -44,7 +33,7 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
 
-        holder.binding.itemListMeetingTxtName.setText(meeting.getName());
+        holder.binding.itemListMeetingTxtName.setText(meeting.getTitleString());
         holder.binding.itemListMeetingImg.setColorFilter(meeting.getColorInt(), PorterDuff.Mode.SRC_ATOP);
         holder.binding.itemListDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

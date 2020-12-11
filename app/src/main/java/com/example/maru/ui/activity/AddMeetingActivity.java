@@ -1,12 +1,12 @@
-package com.example.maru.ui;
+package com.example.maru.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -14,7 +14,6 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,9 +22,10 @@ import com.example.maru.R;
 import com.example.maru.base.BaseActivity;
 import com.example.maru.databinding.ActivityAddMeetingBinding;
 import com.example.maru.di.DI;
-import com.example.maru.dialog.PickUserDialog;
+import com.example.maru.ui.adapter.ListUserAdapter;
+import com.example.maru.ui.dialog.PickRoomDialog;
+import com.example.maru.ui.dialog.PickUserDialog;
 import com.example.maru.event.DeleteUserEvent;
-import com.example.maru.event.GetUserEvent;
 import com.example.maru.model.Meeting;
 import com.example.maru.service.MeetingApiService;
 
@@ -33,13 +33,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
-public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> implements PickUserDialog.PickUserDialogListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> implements PickUserDialog.PickUserDialogListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, PickRoomDialog.PickRoomDialogListener {
 
     private MeetingApiService myApiService;
 
@@ -56,6 +55,7 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     private String newMeetingRoom;
     private ArrayList<String> newMeetingUsers = new ArrayList<>();
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,10 +97,10 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
             }
         });
 
-        binding.activityAddMeetingBtCreateMeeting.setOnClickListener(new View.OnClickListener() {
+        binding.activityAddMeetingBtPickRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createMeeting();
+                openDialRoom();
             }
         });
 
@@ -137,6 +137,13 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
             public void afterTextChanged(Editable s) {
                 newMeetingRoom = s.toString();
                 isFilled();
+            }
+        });
+
+        binding.activityAddMeetingBtCreateMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createMeeting();
             }
         });
     }
@@ -225,6 +232,11 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
         timePickerDialog.show();
     }
 
+    private void openDialRoom() {
+        PickRoomDialog pickRoomDialog = new PickRoomDialog();
+        pickRoomDialog.show(getSupportFragmentManager(), "Pick Room Dialog");
+    }
+
     private void openDialAddUser() {
         PickUserDialog pickUserDialog = new PickUserDialog();
         pickUserDialog.show(getSupportFragmentManager(), "Pick User Dialog");
@@ -260,34 +272,26 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
         initRecycler();
     }
 
-    private boolean isFilled() {
-        if(binding.activityAddMeetingTxtName.getText().toString().isEmpty()) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
-        if(newMeetingColor==0x000000) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
-        if(binding.activityAddMeetingTxtDate.getText()==getString(R.string.hint_date)) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
-        if(binding.activityAddMeetingTxtTime.getText()==getString(R.string.hint_hour)) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
-        if(binding.activityAddMeetingTxtRoom.getText().toString().isEmpty()) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
-        if(newMeetingUsers.isEmpty()) {
-            binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
-            return false;
-        }
+    @Override
+    public void sendRoom(String room) {
+        binding.activityAddMeetingTxtRoom.setText(room);
+    }
 
-        binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape_on));
-        return true;
+    private boolean isFilled() {
+        boolean state = true;
+
+        if(binding.activityAddMeetingTxtName.getText().toString().isEmpty()) state = false;
+        else if(newMeetingColor==0x000000) state = false;
+
+        else if(binding.activityAddMeetingTxtDate.getText().toString().equals(getString(R.string.hint_date))) state = false;
+        else if(binding.activityAddMeetingTxtTime.getText().toString().equals(getString(R.string.hint_hour))) state = false;
+        else if(binding.activityAddMeetingTxtRoom.getText().toString().equals(getString(R.string.hint_room))) state = false;
+        else if(newMeetingUsers.isEmpty()) state = false;
+
+        if(state) binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape_on));
+        else binding.activityAddMeetingBtCreateMeeting.setBackground(getDrawable(R.drawable.rounded_shape));
+
+        return state;
     }
 
     private void createMeeting() {
