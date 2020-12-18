@@ -38,10 +38,12 @@ public class MeetingServiceTest {
 
     @Test
     public void getMeetingsByDateWithSuccess() {
-        Date date = new Date(2020, 11, 4);
-        List<Meeting> meetingsByDate = service.getMeetingsByDate(date);
+        int year = 2020; int month = 11; int day = 4;
+        List<Meeting> meetingsByDate = service.getMeetingsByDate(year, month, day);
         for (Meeting m:meetingsByDate) {
-            assertEquals(date, m.getDay());
+            assertEquals(year, m.getYear());
+            assertEquals(month, m.getMonth());
+            assertEquals(day, m.getDay());
         }
     }
 
@@ -83,7 +85,7 @@ public class MeetingServiceTest {
 
     @Test
     public void createMeetingWithSuccess() {
-        Meeting meetingToAdd = new Meeting(service.getNextId(), "Test Unitaire", "A2", new Date(2021, 1, 10, 14,0), "#F84C44", service.getUsers());
+        Meeting meetingToAdd = new Meeting(service.getNextId(), "Test Unitaire", "A2", 2021, 1, 10, 14,0, "#F84C44", service.getUsers());
         service.createMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
     }
