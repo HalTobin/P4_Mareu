@@ -30,6 +30,7 @@ import static com.example.maru.utils.RecyclerViewItemCountAssertion.*;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,8 +56,6 @@ import static org.junit.Assert.*;
 public class MeetingListTest {
 
     private static int MEETINGS_COUNT = 8;
-    private static int USERS_COUNT = 7;
-    private static int ROOMS_COUNT = 10;
 
     private ListMeetingActivity mActivity;
     private ActivityScenario mScenario;
@@ -70,6 +69,11 @@ public class MeetingListTest {
         Intents.init();
         mScenario = mActivityRule.getScenario();
         assertThat(mScenario, notNullValue());
+    }
+
+    @After
+    public void cleanUp() {
+        Intents.release();
     }
 
     @Test
@@ -119,7 +123,8 @@ public class MeetingListTest {
         //click on the button "Créer une réunion" to create the meeting
         onView(withId(R.id.activity_add_meeting_bt_create_meeting)).perform(click());
         //check the number of meeting
-        onView(ViewMatchers.withId(R.id.list_meetings)).check(new RecyclerViewItemCountAssertion(MEETINGS_COUNT+1));
+        MEETINGS_COUNT += 1;
+        onView(ViewMatchers.withId(R.id.list_meetings)).check(new RecyclerViewItemCountAssertion(MEETINGS_COUNT));
     }
 
     public void myAddMeetingActivity_addUser(int indexUser) {
@@ -138,7 +143,8 @@ public class MeetingListTest {
         //click on a delete icon
         onView(allOf(withId(R.id.item_list_delete_button), childAtPosition(childAtPosition(withId(R.id.list_meetings), 3), 3))).perform(click());
         //check if one item has been removed
-        onView(ViewMatchers.withId(R.id.list_meetings)).check(new RecyclerViewItemCountAssertion(MEETINGS_COUNT-1));
+        MEETINGS_COUNT -= 1;
+        onView(ViewMatchers.withId(R.id.list_meetings)).check(new RecyclerViewItemCountAssertion(MEETINGS_COUNT));
     }
 
     @Test
