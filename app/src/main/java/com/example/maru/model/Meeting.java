@@ -3,11 +3,12 @@ package com.example.maru.model;
 import android.graphics.Color;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Model object representing a Neighbour
+ * Model object representing a Meeting
  */
 public class Meeting implements Serializable {
 
@@ -20,20 +21,11 @@ public class Meeting implements Serializable {
     /** Room used for the meeting*/
     private String room;
 
-    /** Year */
-    private int year;
+    /** Date - long */
+    private long dateLong;
 
-    /** Month */
-    private int month;
-
-    /** Day */
-    private int day;
-
-    /** Hour */
-    private int hour;
-
-    /** Minute */
-    private int min;
+    /** Date - Calender */
+    private Calendar calendar = Calendar.getInstance();
 
     /** Color */
     private int colorInt;
@@ -54,6 +46,25 @@ public class Meeting implements Serializable {
      * @param id
      * @param name
      * @param room
+     * @param date
+     * @param colorInt
+     * @params users
+     */
+    public Meeting(long id, String name, String room, Calendar date, int colorInt, List<String> users) {
+        this.id = id;
+        this.name = name;
+        this.room = room;
+        this.dateLong = date.getTimeInMillis();
+        this.calendar = date;
+        this.colorInt = colorInt;
+        this.users = users;
+    }
+
+    /**
+     * Constructor
+     * @param id
+     * @param name
+     * @param room
      * @param year
      * @param month
      * @param day
@@ -63,15 +74,35 @@ public class Meeting implements Serializable {
      * @params users
      */
     public Meeting(long id, String name, String room, int year, int month, int day, int hour, int min, String colorHex, List<String> users) {
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.set(Calendar.MILLISECOND, 0);
+        tempCalendar.set(year, month, day, hour, min);
+
         this.id = id;
         this.name = name;
         this.room = room;
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.min = min;
+        this.dateLong = tempCalendar.getTimeInMillis();
+        this.calendar = tempCalendar;
         this.colorInt = Color.parseColor(colorHex);
+        this.users = users;
+    }
+
+    /**
+     * Constructor
+     * @param id
+     * @param name
+     * @param room
+     * @param timeStamp
+     * @param colorInt
+     * @params users
+     */
+    public Meeting(long id, String name, String room, long timeStamp, int colorInt, List<String> users) {
+        this.id = id;
+        this.name = name;
+        this.room = room;
+        this.dateLong = timeStamp;
+        this.calendar.setTimeInMillis(timeStamp);
+        this.colorInt = colorInt;
         this.users = users;
     }
 
@@ -99,42 +130,60 @@ public class Meeting implements Serializable {
         this.room = room;
     }
 
-    public int getYear() {
-        return year;
+    public void setDateLong(long timeStamp) {
+        this.dateLong = timeStamp;
+        this.calendar.setTimeInMillis(dateLong);
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public long getTimeStamp() {
+        return dateLong;
+    }
+
+    public void setCalendar(Calendar date) {
+        this.calendar = date;
+        this.dateLong = calendar.getTimeInMillis();
+    }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public int getYear() {
+        return calendar.get(Calendar.YEAR);
     }
 
     public int getMonth() {
-        return month;
+        return calendar.get(Calendar.MONTH);
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() { return day; }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
+    public int getDay() { return calendar.get(Calendar.DATE); }
 
     public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     public int getMin() {
-        return min;
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public void setYear(int year) {
+        calendar.set(Calendar.YEAR, year);
+    }
+
+    public void setMonth(int month) {
+        calendar.set(Calendar.MONTH, month);
+    }
+
+    public void setDay(int day) {
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+    }
+
+    public void setHour(int hour) {
+        calendar.set(Calendar.HOUR, hour);
     }
 
     public void setMin(int min) {
-        this.min = min;
+        calendar.set(Calendar.MINUTE, min);
     }
 
     public int getColorInt() {
@@ -162,7 +211,7 @@ public class Meeting implements Serializable {
     }
 
     public String getTitleString() {
-        String myString = String.format("%02d", hour) + "h" + String.format("%02d", min) + " - " + this.getRoom() + " - " + this.getName();
+        String myString = String.format("%02d", this.getHour()) + "h" + String.format("%02d", this.getMin()) + " - " + this.getRoom() + " - " + this.getName();
         return myString;
     }
 
@@ -175,11 +224,18 @@ public class Meeting implements Serializable {
         return myString;
     }
 
-    public boolean isDateEqual(int year, int month, int day) {
+    public boolean isDateEqual(Calendar toCompare) {
         boolean isEqual = true;
-        if(this.year != year) isEqual = false;
-        if(this.month != month) isEqual = false;
-        if(this.day != day) isEqual = false;
+        if(this.getYear() != toCompare.get(Calendar.YEAR)) isEqual = false;
+        if(this.getMonth() != toCompare.get(Calendar.MONTH)) isEqual = false;
+        if(this.getDay() != toCompare.get(Calendar.DATE)) isEqual = false;
+        return isEqual;
+    }
+
+    public boolean isAlreadyUsed(String newRoom, Calendar newDate) {
+        boolean isEqual = true;
+        if(!((this.getTimeStamp() - newDate.getTimeInMillis()) < 3600000 && (this.getTimeStamp() - newDate.getTimeInMillis()) > -3600000)) isEqual = false;
+        if(!this.room.equals(newRoom)) isEqual = false;
         return isEqual;
     }
 

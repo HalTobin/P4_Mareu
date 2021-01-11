@@ -2,10 +2,11 @@ package com.example.maru.service;
 
 import com.example.maru.model.Meeting;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
- * Neighbour API client
+ * Meeting API client
  */
 public interface MeetingApiService {
 
@@ -19,7 +20,7 @@ public interface MeetingApiService {
      * Get all the Meetings of a specific date
      * @return {@Link List}
      */
-    List<Meeting> getMeetingsByDate(int year, int month, int day);
+    List<Meeting> getMeetingsByDate(Calendar toFilter);
 
     /**
      * Get all the Meetings of a specific room
@@ -49,6 +50,8 @@ public interface MeetingApiService {
      * Create a meeting
      */
     void createMeeting(Meeting meeting);
+
+    boolean isRoomAvailable(String newRoom, Calendar newDate);
 
     /**
      * Get the next available Id

@@ -20,4 +20,6 @@
     <string name="select">Valider</string>
     <string name="cancel">Annuler</string>
 
+    <string name="room_not_available_title">Attention</string>
+    <string name="room_not_available_content">Cette salle est déjà utilisé durant l\'heure que vous avez sélectionné, êtes vous sûr de vouloir créer cette réunion ?</string>
 </resources>

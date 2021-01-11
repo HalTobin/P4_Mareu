@@ -32,12 +32,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         final String user = mUsers.get(position);
 
         holder.binding.itemListUserTxtName.setText(user);
-        holder.binding.itemListUserBtDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new DeleteUserEvent(user));
-            }
-        });
+        holder.binding.itemListUserBtDelete.setOnClickListener(v -> EventBus.getDefault().post(new DeleteUserEvent(user)));
 
     }
 

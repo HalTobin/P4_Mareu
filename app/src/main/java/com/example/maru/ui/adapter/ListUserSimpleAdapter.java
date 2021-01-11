@@ -31,12 +31,7 @@ public class ListUserSimpleAdapter extends RecyclerView.Adapter<ListUserSimpleAd
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final String user = mUsers.get(position);
         holder.binding.itemListUserSimpleTxtName.setText(user);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new GetUserEvent(user));
-            }
-        });
+        holder.itemView.setOnClickListener(v -> EventBus.getDefault().post(new GetUserEvent(user)));
     }
 
     @Override

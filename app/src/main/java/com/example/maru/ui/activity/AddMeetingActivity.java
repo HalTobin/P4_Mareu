@@ -1,14 +1,15 @@
 package com.example.maru.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -46,6 +47,7 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     private Meeting newMeeting;
     private String newMeetingName;
     private int newMeetingColor = 0x000000;
+    Calendar newMeetingDate = Calendar.getInstance();
     private int newMeetingDay;
     private int newMeetingMonth;
     private int newMeetingYear;
@@ -61,47 +63,20 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         myApiService = DI.getMeetingApiService();
-
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 
-        binding.activityAddMeetingImgColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialColor();
-            }
-        });
+        binding.activityAddMeetingImgColor.setOnClickListener(v -> openDialColor());
 
-        binding.activityAddMeetingBtPickDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialDate();
-            }
-        });
+        binding.activityAddMeetingBtPickDate.setOnClickListener(v -> openDialDate());
 
-        binding.activityAddMeetingBtPickTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialTime();
-            }
-        });
+        binding.activityAddMeetingBtPickTime.setOnClickListener(v -> openDialTime());
 
-        binding.activityAddMeetingBtAddUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialAddUser();
-            }
-        });
+        binding.activityAddMeetingBtAddUser.setOnClickListener(v -> openDialAddUser());
 
-        binding.activityAddMeetingBtPickRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialRoom();
-            }
-        });
+        binding.activityAddMeetingBtPickRoom.setOnClickListener(v -> openDialRoom());
 
         binding.activityAddMeetingTxtName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -139,12 +114,7 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
             }
         });
 
-        binding.activityAddMeetingBtCreateMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createMeeting();
-            }
-        });
+        binding.activityAddMeetingBtCreateMeeting.setOnClickListener(v -> preCreationMeeting());
     }
 
     @Override
@@ -160,11 +130,9 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
 
     private void initRecycler() {
         myAdapter = new ListUserAdapter(newMeetingUsers);
-
         binding.activityAddMeetingListUser.setLayoutManager(new LinearLayoutManager(this));
         binding.activityAddMeetingListUser.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         binding.activityAddMeetingListUser.setAdapter(myAdapter);
-
         isFilled();
     }
 
@@ -195,20 +163,12 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     private void openDialColor() {
         final ColorPicker colorPickerDialog = new ColorPicker(this);
         colorPickerDialog.disableDefaultButtons(true);
-        colorPickerDialog.addListenerButton(getString(R.string.cancel), new ColorPicker.OnButtonListener() {
-            @Override
-            public void onClick(View v, int position, int color) {
-                colorPickerDialog.dismissDialog();
-            }
-        });
-        colorPickerDialog.addListenerButton(getString(R.string.select), new ColorPicker.OnButtonListener() {
-            @Override
-            public void onClick(View v, int position, int color) {
-                newMeetingColor = color;
-                binding.activityAddMeetingImgColor.setColorFilter(newMeetingColor);
-                colorPickerDialog.dismissDialog();
-                isFilled();
-            }
+        colorPickerDialog.addListenerButton(getString(R.string.cancel), (v, position, color) -> colorPickerDialog.dismissDialog());
+        colorPickerDialog.addListenerButton(getString(R.string.select), (v, position, color) -> {
+            newMeetingColor = color;
+            binding.activityAddMeetingImgColor.setColorFilter(newMeetingColor);
+            colorPickerDialog.dismissDialog();
+            isFilled();
         });
         colorPickerDialog.setTitle(getString(R.string.pick_a_color)).setColumns(5).show();
         isFilled();
@@ -226,8 +186,8 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     private void openDialTime() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 this,
-                Calendar.getInstance().get(Calendar.MINUTE),
                 Calendar.getInstance().get(Calendar.HOUR),
+                Calendar.getInstance().get(Calendar.MINUTE),
                 true);
         timePickerDialog.show();
     }
@@ -242,11 +202,32 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
         pickUserDialog.show(getSupportFragmentManager(), "Pick User Dialog");
     }
 
+    private void openAlert() {
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(this);
+        myAlertBuilder.setTitle(getString(R.string.room_not_available_title));
+        myAlertBuilder.setMessage(getString(R.string.room_not_available_content));
+        myAlertBuilder.setPositiveButton(getString(R.string.select), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                createMeeting();
+                dialog.dismiss();
+            }
+        });
+        myAlertBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog myAlert = myAlertBuilder.create();
+        myAlert.show();
+    }
+
     public static void navigate(FragmentActivity activity) {
         Intent intent = new Intent(activity, AddMeetingActivity.class);
         ActivityCompat.startActivity(activity, intent, null);
     }
-
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -282,7 +263,6 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
 
         if(binding.activityAddMeetingTxtName.getText().toString().isEmpty()) state = false;
         else if(newMeetingColor==0x000000) state = false;
-
         else if(binding.activityAddMeetingTxtDate.getText().toString().equals(getString(R.string.hint_date))) state = false;
         else if(binding.activityAddMeetingTxtTime.getText().toString().equals(getString(R.string.hint_hour))) state = false;
         else if(binding.activityAddMeetingTxtRoom.getText().toString().equals(getString(R.string.hint_room))) state = false;
@@ -294,22 +274,18 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
         return state;
     }
 
-    private void createMeeting() {
-        if(isFilled())
-        {
-            newMeeting = new Meeting();
-            newMeeting.setId(myApiService.getNextId());
-            newMeeting.setName(newMeetingName);
-            newMeeting.setRoom(newMeetingRoom);
-            newMeeting.setYear(newMeetingYear);
-            newMeeting.setMonth(newMeetingMonth);
-            newMeeting.setDay(newMeetingDay);
-            newMeeting.setHour(newMeetingHour);
-            newMeeting.setMin(newMeetingMin);
-            newMeeting.setColorInt(newMeetingColor);
-            newMeeting.setUsers(newMeetingUsers);
-            myApiService.createMeeting(newMeeting);
-            finish();
+    private void preCreationMeeting() {
+        newMeetingDate.set(newMeetingYear, newMeetingMonth, newMeetingDay, newMeetingHour, newMeetingMin);
+        if(isFilled()) {
+            System.out.println(myApiService.isRoomAvailable(newMeetingRoom, newMeetingDate));
+            if(myApiService.isRoomAvailable(newMeetingRoom, newMeetingDate)) createMeeting();
+            else openAlert();
         }
+    }
+
+    private void createMeeting() {
+        newMeeting = new Meeting(myApiService.getNextId(), newMeetingName, newMeetingRoom, newMeetingDate.getTimeInMillis(), newMeetingColor, newMeetingUsers);
+        myApiService.createMeeting(newMeeting);
+        finish();
     }
 }

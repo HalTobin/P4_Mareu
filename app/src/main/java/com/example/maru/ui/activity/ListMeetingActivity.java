@@ -40,12 +40,7 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
         super.onCreate(savedInstanceState);
         myApiService = DI.getMeetingApiService();
 
-        binding.addMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMeeting();
-            }
-        });
+        binding.addMeeting.setOnClickListener(v -> addMeeting());
         setSupportActionBar(binding.toolbar);
     }
 
@@ -114,7 +109,7 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
                 this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                Calendar.getInstance().get(Calendar.DATE));
         datePickerDialog.show();
     }
 
@@ -126,7 +121,9 @@ public class ListMeetingActivity extends BaseActivity<ActivityListMeetingBinding
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         System.out.println("DATE PICKER DIALOG : " + dayOfMonth+"/"+month+"/"+year);
-        myMeetings = myApiService.getMeetingsByDate(year, month, dayOfMonth);
+        Calendar forFilter = Calendar.getInstance();
+        forFilter.set(year, month, dayOfMonth);
+        myMeetings = myApiService.getMeetingsByDate(forFilter);
         initRecycler();
     }
 

@@ -31,12 +31,7 @@ public class ListRoomSimpleAdapter extends RecyclerView.Adapter<ListRoomSimpleAd
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final String room = mRooms.get(position);
         holder.binding.itemListRoomSimpleTxtName.setText(room);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new GetRoomEvent(room));
-            }
-        });
+        holder.itemView.setOnClickListener(v -> EventBus.getDefault().post(new GetRoomEvent(room)));
     }
 
     @Override

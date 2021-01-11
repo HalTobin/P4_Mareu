@@ -32,16 +32,9 @@ public class ListMeetingAdapter extends RecyclerView.Adapter<ListMeetingAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
-
         holder.binding.itemListMeetingTxtName.setText(meeting.getTitleString());
         holder.binding.itemListMeetingImg.setColorFilter(meeting.getColorInt(), PorterDuff.Mode.SRC_ATOP);
-        holder.binding.itemListDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
-            }
-        });
-
+        holder.binding.itemListDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
         holder.binding.itemListMeetingTxtUsers.setText(meeting.getUsersString());
     }
 

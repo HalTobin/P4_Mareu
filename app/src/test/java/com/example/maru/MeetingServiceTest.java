@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -32,18 +32,19 @@ public class MeetingServiceTest {
     @Test
     public void getMeetingsWithSuccess() {
         List<Meeting> meetings = service.getMeetings();
-        List<Meeting> expectedNeighbours = DummyMeetingGenerator.DUMMY_MEETINGS;
-        assertThat(meetings, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
+        List<Meeting> expectedMeetings = DummyMeetingGenerator.DUMMY_MEETINGS;
+        assertThat(meetings, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedMeetings.toArray()));
     }
 
     @Test
     public void getMeetingsByDateWithSuccess() {
-        int year = 2020; int month = 11; int day = 4;
-        List<Meeting> meetingsByDate = service.getMeetingsByDate(year, month, day);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, 11, 4);
+        List<Meeting> meetingsByDate = service.getMeetingsByDate(calendar);
         for (Meeting m:meetingsByDate) {
-            assertEquals(year, m.getYear());
-            assertEquals(month, m.getMonth());
-            assertEquals(day, m.getDay());
+            assertEquals(calendar.get(Calendar.YEAR), m.getYear());
+            assertEquals(calendar.get(Calendar.MONTH), m.getMonth());
+            assertEquals(calendar.get(Calendar.DAY_OF_MONTH), m.getDay());
         }
     }
 
@@ -59,15 +60,15 @@ public class MeetingServiceTest {
     @Test
     public void getUsersWithSuccess() {
         List<String> users = service.getUsers();
-        List<String> expectedNeighbours = DummyMeetingGenerator.DUMMY_USERS;
-        assertThat(users, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
+        List<String> expectedMeetings = DummyMeetingGenerator.DUMMY_USERS;
+        assertThat(users, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedMeetings.toArray()));
     }
 
     @Test
     public void getRoomsWithSuccess() {
         List<String> rooms = service.getRooms();
-        List<String> expectedNeighbours = DummyMeetingGenerator.DUMMY_ROOMS;
-        assertThat(rooms, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
+        List<String> expectedMeetings = DummyMeetingGenerator.DUMMY_ROOMS;
+        assertThat(rooms, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedMeetings.toArray()));
     }
 
     @Test
@@ -88,5 +89,14 @@ public class MeetingServiceTest {
         Meeting meetingToAdd = new Meeting(service.getNextId(), "Test Unitaire", "A2", 2021, 1, 10, 14,0, "#F84C44", service.getUsers());
         service.createMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
+    }
+
+    @Test
+    public void isRoomAvailableWithSuccess() {
+        createMeetingWithSuccess();
+        Meeting meeting = service.getMeetings().get(service.getMeetings().size()-1);
+        assertFalse(service.isRoomAvailable("A2", meeting.getCalendar()));
+        meeting.setHour(15);
+        assertTrue(service.isRoomAvailable("A2", meeting.getCalendar()));
     }
 }
