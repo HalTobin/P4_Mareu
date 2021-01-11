@@ -1,20 +1,18 @@
 package com.example.maru.event;
 
 /**
- * Event fired when a user deletes a Meeting
+ * Event fired when a user select a Room
  */
 public class GetRoomEvent {
 
     /**
-     * Meeting to delete
+     * Room to select
      */
-
     public String room;
 
     /**
      * Constructor.
      * @param room
      */
-
     public GetRoomEvent(String room) { this.room = room; }
 }

@@ -2,7 +2,6 @@ package com.example.maru.ui.adapter;
 
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
