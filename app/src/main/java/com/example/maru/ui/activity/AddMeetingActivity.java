@@ -275,8 +275,8 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     }
 
     private void preCreationMeeting() {
-        newMeetingDate.set(newMeetingYear, newMeetingMonth, newMeetingDay, newMeetingHour, newMeetingMin);
         if(isFilled()) {
+            newMeetingDate.set(newMeetingYear, newMeetingMonth, newMeetingDay, newMeetingHour, newMeetingMin);
             System.out.println("AVAILABLE : " + myApiService.isRoomAvailable(newMeetingRoom, newMeetingDate));
             if(myApiService.isRoomAvailable(newMeetingRoom, newMeetingDate)) createMeeting();
             else openAlert();
