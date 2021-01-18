@@ -186,7 +186,7 @@ public class AddMeetingActivity extends BaseActivity<ActivityAddMeetingBinding> 
     private void openDialTime() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 this,
-                Calendar.getInstance().get(Calendar.HOUR),
+                Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                 Calendar.getInstance().get(Calendar.MINUTE),
                 true);
         timePickerDialog.show();
