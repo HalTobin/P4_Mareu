@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -12,7 +12,8 @@
         android:id="@+id/dialog_picker_user_list_users"
         android:name="com.example.mareu.ui.FragmentMeeting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layoutManager="LinearLayoutManager"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -23,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
 
@@ -35,5 +37,4 @@
             android:hint="@string/hint_user"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
 </LinearLayout>
